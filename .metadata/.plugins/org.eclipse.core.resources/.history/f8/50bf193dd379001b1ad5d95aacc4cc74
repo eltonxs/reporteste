@@ -1,0 +1,43 @@
+package web;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+
+public class Teste {
+
+	WebDriver driver = new ChromeDriver();
+	ExtentReports extent = new ExtentReports();
+	ExtentSparkReporter spark = new ExtentSparkReporter("target/Report.html");
+
+	@Before
+	public void abrirPagina() {
+		driver.get("https://google.com");
+		extent.createTest("Abriu a pagina").log(Status.PASS, "Abriu a pagina");
+		extent.attachReporter(spark);
+
+	}
+
+	@Test
+	public void digitaBusca() {
+		driver.findElement(By.name("q")).sendKeys("Brasil" + Keys.ENTER);
+		extent.createTest("Digita a Busca").log(Status.PASS, "Digitou a busca");
+		extent.setSystemInfo("os","linux");
+
+	}
+
+	@After
+	public void encerrarPagina() {
+		extent.flush();
+		driver.close();
+
+	}
+
+}
